@@ -52,6 +52,7 @@ bool ros2GenAPI(const std::string& ros_enc, std::string& gen_api_enc)
   {
     gen_api_enc = "Mono16";
   }
+#if 0
   else if (ros_enc == sensor_msgs::image_encodings::CONFIDENCE16)
   {
     gen_api_enc = "Confidence16";
@@ -64,6 +65,7 @@ bool ros2GenAPI(const std::string& ros_enc, std::string& gen_api_enc)
   {
     gen_api_enc = "Coord3D_ABCY16";
   }
+#endif
   else if (ros_enc == sensor_msgs::image_encodings::BGR8)
   {
     gen_api_enc = "BGR8";
