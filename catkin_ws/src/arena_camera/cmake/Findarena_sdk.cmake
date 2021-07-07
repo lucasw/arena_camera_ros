@@ -3,24 +3,13 @@ set(_LOG_LVL DEBUG) # does not filter as it should
 set(_LOG_LVL_FRMT "-- [ ${_LOG_LVL} ] ")
 
 # the installation script place
-set(_arena_sdk_conf "/etc/ld.so.conf.d/Arena_SDK.conf")
+set(arena_sdk_installation_root "$ENV{ARENA_PATH}")
 
-
-if(EXISTS ${_arena_sdk_conf})
+if(EXISTS ${arena_sdk_installation_root})
 
 	###### --------------------------------------------------------------------
 	# ROOT
 	######
-
-	# get first line in Arena_SDK.conf which is the lib64 path. then get the
-	# parent direcotry of the first path which suppose to be the location of
-	# the installed ArenaSDK
-	execute_process(
-		COMMAND bash -c "dirname $(head -n 1 \"/etc/ld.so.conf.d/Arena_SDK.conf\")"
-		OUTPUT_VARIABLE arena_sdk_installation_root
-		#ENCODING UTF8
-		)
-	string(STRIP ${arena_sdk_installation_root} arena_sdk_installation_root)
 
 	message(${_LOG_LVL_FRMT} "arena_sdk_installation_root = ${arena_sdk_installation_root}")
 
