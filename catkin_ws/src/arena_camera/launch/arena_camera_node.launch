@@ -10,6 +10,13 @@
 
     <node name="$(arg node_name)" pkg="arena_camera" type="arena_camera_node" output="screen"
           respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
-        <rosparam command="load" file="$(arg config_file)" />
+        <!--rosparam command="load" file="$(arg config_file)" /-->
     </node>
+
+    <group ns="$(arg node_name)/image_raw" >
+        <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressedDepth'
+            - 'image_transport/theora'
+       </rosparam>
+    </group>
 </launch>
