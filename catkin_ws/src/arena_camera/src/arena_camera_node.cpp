@@ -78,7 +78,7 @@ ArenaCameraNode::ArenaCameraNode()
   , it_(new image_transport::ImageTransport(nh_))
   , img_raw_pub_(it_->advertiseCamera("image_raw", 1))
   , img_rect_pub_(nullptr)
-  , grab_imgs_raw_as_(nh_, "grab_images_raw", boost::bind(&ArenaCameraNode::grabImagesRawActionExecuteCB, this, _1),
+  , grab_imgs_raw_as_(nh_, "grab_images_raw", boost::bind(&ArenaCameraNode::grabImagesRawActionExecuteCB, this, boost::placeholders::_1),
                       false)
   , grab_imgs_rect_as_(nullptr)
   , pinhole_model_(nullptr)
@@ -404,8 +404,8 @@ bool ArenaCameraNode::startGrabbing()
     // PACKETS
     //
     // configure Auto Negotiate Packet Size and Packet Resend
-    Arena::SetNodeValue<bool>(pDevice->GetTLStreamNodeMap(), "StreamAutoNegotiatePacketSize", true);
-    Arena::SetNodeValue<bool>(pDevice->GetTLStreamNodeMap(), "StreamPacketResendEnable", true);
+    Arena::SetNodeValue<bool>(pDevice_->GetTLStreamNodeMap(), "StreamAutoNegotiatePacketSize", true);
+    Arena::SetNodeValue<bool>(pDevice_->GetTLStreamNodeMap(), "StreamPacketResendEnable", true);
 
     //
     // TRIGGER MODE
@@ -670,7 +670,7 @@ void ArenaCameraNode::setupRectification()
   if (!grab_imgs_rect_as_)
   {
     grab_imgs_rect_as_ = new GrabImagesAS(
-        nh_, "grab_images_rect", boost::bind(&ArenaCameraNode::grabImagesRectActionExecuteCB, this, _1), false);
+        nh_, "grab_images_rect", boost::bind(&ArenaCameraNode::grabImagesRectActionExecuteCB, this, boost::placeholders::_1), false);
     grab_imgs_rect_as_->start();
   }
 
