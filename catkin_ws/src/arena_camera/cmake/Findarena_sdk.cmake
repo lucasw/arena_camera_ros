@@ -1,26 +1,15 @@
 
-set(_LOG_LVL DEBUG) # does not filter as it should 
+set(_LOG_LVL DEBUG) # does not filter as it should
 set(_LOG_LVL_FRMT "-- [ ${_LOG_LVL} ] ")
 
 # the installation script place
-set(_arena_sdk_conf "/etc/ld.so.conf.d/Arena_SDK.conf")
+set(arena_sdk_installation_root "$ENV{ARENA_PATH}")
 
-
-if(EXISTS ${_arena_sdk_conf})
+if(EXISTS ${arena_sdk_installation_root})
 
 	###### --------------------------------------------------------------------
 	# ROOT
 	######
-
-	# get first line in Arena_SDK.conf which is the lib64 path. then get the
-	# parent direcotry of the first path which suppose to be the location of
-	# the installed ArenaSDK
-	execute_process(
-		COMMAND bash -c "dirname $(head -n 1 \"/etc/ld.so.conf.d/Arena_SDK.conf\")"
-		OUTPUT_VARIABLE arena_sdk_installation_root
-		#ENCODING UTF8
-		)
-	string(STRIP ${arena_sdk_installation_root} arena_sdk_installation_root)
 
 	message(${_LOG_LVL_FRMT} "arena_sdk_installation_root = ${arena_sdk_installation_root}")
 
@@ -38,20 +27,20 @@ if(EXISTS ${_arena_sdk_conf})
 	###### --------------------------------------------------------------------
 	# LIBS
 	######
-	
+
 	if(EXISTS ${arena_sdk_installation_root}/GenICam/library/lib/Linux64_x64/libGCBase_gcc421_v3_0.so)
 		set(ArenaSDK_Build "Linux64_x64_pre_54")
 	elseif(EXISTS ${arena_sdk_installation_root}/GenICam/library/lib/Linux64_x64/libGCBase_gcc54_v3_3_LUCID.so)
 		set(ArenaSDK_Build "Linux64_x64_54")
 	elseif(EXISTS ${arena_sdk_installation_root}/GenICam/library/lib/Linux64_ARM/libGCBase_gcc54_v3_3_LUCID.so)
 		set(ArenaSDK_Build "Linux64_ARM")
-		
+
 	else()
 		message( FATAL_ERROR "LUCID GenICam not found. Please reisntall ArenaSDK "
 					 "If having issues, contact: "
 					 "LUCID support team (support@thinklucid.com). ")
 	endif()
-	
+
 	if("${ArenaSDK_Build}" STREQUAL "Linux64_x64_pre_54")
 		set(arena_sdk_LIBS
 
@@ -108,7 +97,7 @@ if(EXISTS ${_arena_sdk_conf})
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_x64/libMathParser_gcc54_v3_3_LUCID.so
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_x64/libNodeMapData_gcc54_v3_3_LUCID.so
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_x64/libXmlParser_gcc54_v3_3_LUCID.so
-		
+
 		## fmpeg
 		#${arena_sdk_installation_root}/ffmpeg/libavcodec.so
 		#${arena_sdk_installation_root}/ffmpeg/libavformat.so
@@ -140,7 +129,7 @@ if(EXISTS ${_arena_sdk_conf})
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_ARM/libMathParser_gcc54_v3_3_LUCID.so
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_ARM/libNodeMapData_gcc54_v3_3_LUCID.so
 		#${arena_sdk_installation_root}/GenICam/library/lib/Linux64_ARM/libXmlParser_gcc54_v3_3_LUCID.so
-		
+
 		## fmpeg
 		#${arena_sdk_installation_root}/ffmpeg/libavcodec.so
 		#${arena_sdk_installation_root}/ffmpeg/libavformat.so
